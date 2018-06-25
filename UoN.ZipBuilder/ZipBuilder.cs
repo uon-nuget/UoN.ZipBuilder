@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 
@@ -37,7 +37,7 @@ namespace UoN.ZipBuilder
 
             DataStream = new MemoryStream();
 
-            ZipStream = new ZipOutputStream(DataStream); // new ZipArchive(ZipStream, ZipArchiveMode.Create, true);
+            ZipStream = new ZipOutputStream(DataStream);
 
             return this;
         }
@@ -51,8 +51,6 @@ namespace UoN.ZipBuilder
                 ZipStream, new byte[4096]);
 
             ZipStream.CloseEntry();
-
-            //Zip.CreateEntryFromFile(sourcePath, entryName);
             return this;
         }
 
@@ -63,7 +61,6 @@ namespace UoN.ZipBuilder
 
             foreach (var f in Directory.EnumerateFiles(path))
                 AddFile(f, Path.Combine(entryName, Path.GetFileName(f)));
-            //Zip.CreateEntryFromFile(f, Path.Combine(entryName, Path.GetFileName(f)));
 
             return this;
         }
@@ -72,10 +69,8 @@ namespace UoN.ZipBuilder
         {
             ZipStream.PutNextEntry(CreateEntry(entryName));
 
-            //var entry = Zip.CreateEntry(entryName);
-
-            //using (var entryStream = entry.Open())
-            using (var streamWriter = new StreamWriter(ZipStream))
+            // write directly to the ZipStream, but be sure to leave it open!
+            using (var streamWriter = new StreamWriter(ZipStream, Encoding.UTF8, 4096, leaveOpen: true))
                 streamWriter.Write(content);
 
             ZipStream.CloseEntry();
@@ -90,7 +85,6 @@ namespace UoN.ZipBuilder
             ZipStream.IsStreamOwner = false; // leave the memory stream open
             ZipStream.Finish();
 
-            //Zip.Dispose();
             var result = DataStream.ToArray();
             ZipStream.Dispose();
             return result;

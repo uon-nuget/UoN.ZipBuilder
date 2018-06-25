@@ -82,6 +82,6 @@
         /// <returns>A byte array representing the zip.</returns>
         byte[] AsByteArray();
 
-        #region
+        #endregion
     }
 }
