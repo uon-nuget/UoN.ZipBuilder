@@ -1,7 +1,7 @@
 ﻿namespace UoN.ZipBuilder
 {
     /// <summary>
-    /// Inteface for a Builder Pattern class which produces zip files.
+    /// Interface for a Builder Pattern class which produces zip files.
     /// </summary>
     public interface IZipBuilder
     {

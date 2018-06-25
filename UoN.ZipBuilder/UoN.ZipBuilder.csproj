@@ -23,4 +23,8 @@
     <RepositoryUrl>https://github.com/uon-nuget/UoN.ZipBuilder</RepositoryUrl>
     <PackageTags>uon zip netstandard</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
+  </ItemGroup>
 </Project>
