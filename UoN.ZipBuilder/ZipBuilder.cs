@@ -145,12 +145,12 @@ namespace UoN.ZipBuilder
             {
                 if (EncryptionMethod == Encryption.Aes192)
                     throw new InvalidOperationException(
-                        "SharpZipLib doesn't support encrypting with AES at 192 bits.");
+                        "SharpZipLib doesn't support encrypting with AES at 192 bits. Please use a different key strength.");
 
                 // otherwise no AES Encryption
                 entry.AESKeySize = 0;
 
-                // SharpZipLib figures out the rest (Classic vs unencrypted) by itself.
+                // SharpZipLib figures out the rest (Classic vs None) by itself.
             }
         }
     }
