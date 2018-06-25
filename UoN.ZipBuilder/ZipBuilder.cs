@@ -4,7 +4,7 @@ using System.IO.Compression;
 
 namespace UoN.ZipBuilder
 {
-    public class ZipBuilder
+    public class ZipBuilder : IZipBuilder
     {
         private MemoryStream ZipStream { get; set; }
         private ZipArchive Zip { get; set; }
