@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
@@ -16,6 +17,11 @@ namespace UoN.ZipBuilder
         /// SharpZipLib zip stream which DEFLATEs on the way into the underlying stream.
         /// </summary>
         private ZipOutputStream ZipStream { get; set; }
+
+        /// <summary>
+        /// The encryption method to use for all files in the zip.
+        /// </summary>
+        private Encryption EncryptionMethod { get; set; } = Encryption.None;
 
         /// <summary>
         /// Initialise a zip archive and an underlying memorystream for it to work with.
@@ -38,10 +44,7 @@ namespace UoN.ZipBuilder
 
         public ZipBuilder AddFile(string sourcePath, string entryName)
         {
-            var entry = new ZipEntry(entryName);
-            entry.DateTime = DateTime.Now;
-
-            ZipStream.PutNextEntry(entry);
+            ZipStream.PutNextEntry(CreateEntry(entryName));
 
             StreamUtils.Copy(
                 new FileStream(sourcePath, FileMode.Open, FileAccess.Read),
@@ -60,17 +63,14 @@ namespace UoN.ZipBuilder
 
             foreach (var f in Directory.EnumerateFiles(path))
                 AddFile(f, Path.Combine(entryName, Path.GetFileName(f)));
-                //Zip.CreateEntryFromFile(f, Path.Combine(entryName, Path.GetFileName(f)));
+            //Zip.CreateEntryFromFile(f, Path.Combine(entryName, Path.GetFileName(f)));
 
             return this;
         }
 
         public ZipBuilder AddTextContent(string content, string entryName)
         {
-            var entry = new ZipEntry(entryName);
-            entry.DateTime = DateTime.Now;
-
-            ZipStream.PutNextEntry(entry);
+            ZipStream.PutNextEntry(CreateEntry(entryName));
 
             //var entry = Zip.CreateEntry(entryName);
 
@@ -94,6 +94,64 @@ namespace UoN.ZipBuilder
             var result = DataStream.ToArray();
             ZipStream.Dispose();
             return result;
+        }
+
+        public ZipBuilder DisableZip64()
+        {
+            ZipStream.UseZip64 = UseZip64.Off;
+
+            return this;
+        }
+
+        public ZipBuilder UseEncryption(string password, Encryption method = Encryption.Aes)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentException("A password must be specified", nameof(method));
+
+            EncryptionMethod = method;
+
+            if (method != Encryption.None) ZipStream.Password = password;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Stateful helper for creating entries,
+        /// ready to be added to the ZipStream and have data written to them.
+        /// </summary>
+        /// <param name="entryName">The entryname.</param>
+        /// <returns>A new ZipEntry.</returns>
+        private ZipEntry CreateEntry(string entryName)
+        {
+            var entry = new ZipEntry(entryName);
+            entry.DateTime = DateTime.Now;
+
+            EncryptEntry(ref entry);
+
+            return entry;
+        }
+
+        /// <summary>
+        /// Stateful helper for encrypting zip entries based on the Builder's configured method.
+        /// </summary>
+        /// <param name="entry">The zip entry to encrypt.</param>
+        private void EncryptEntry(ref ZipEntry entry)
+        {
+            try
+            {
+                entry.AESKeySize = (int)EncryptionMethod;
+            }
+            catch (ZipException)
+            {
+                if (EncryptionMethod == Encryption.Aes192)
+                    throw new InvalidOperationException(
+                        "SharpZipLib doesn't support encrypting with AES at 192 bits.");
+
+                // otherwise no AES Encryption
+                entry.AESKeySize = 0;
+
+                // SharpZipLib figures out the rest (Classic vs unencrypted) by itself.
+            }
         }
     }
 }

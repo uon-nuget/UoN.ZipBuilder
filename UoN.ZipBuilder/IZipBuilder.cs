@@ -30,25 +30,17 @@
         ZipBuilder DisableZip64();
 
         /// <summary>
-        /// Add weak password encryption to the zip file.
+        /// Add password encryption to all files in the zip file.
         /// 
-        /// This is the original PK Zip encryption spec,
-        /// it's very weak and is NOT RECOMMENDED,
-        /// but is supported by some older zip clients that don't support newer encryption,
-        /// such as Windows Compressed Folders.
-        /// </summary>
-        /// <param name="password">The password for decrypting the zip.</param>
-        /// <returns>The ZipBuilder instance.</returns>
-        ZipBuilder UseClassicEncryption(string password);
-
-        /// <summary>
-        /// Add AES password encryption to the zip file.
+        /// While zip supports encryption on a per-entry basis,
+        /// this builder currently assumes encryption of all files in the archive.
         /// 
-        /// This is WinZip's open zip encryption method, which uses AES.
+        /// Therefore, this setting must be applied before any entries, and can only be done once.
         /// </summary>
-        /// <param name="password">The password for decrypting the zip.</param>
-        /// <returns>The ZipBuilder instance.</returns>
-        ZipBuilder UseAesEncryption(string password, AesKeyBits keyStrength = AesKeyBits._256);
+        /// <param name="password">The password to use for decrypting the zip.</param>
+        /// <param name="method">The encryption method to use. Defaults to AES with a default key size.</param>
+        /// <returns></returns>
+        ZipBuilder UseEncryption(string password, Encryption method = Encryption.Aes);
 
         #endregion
 
