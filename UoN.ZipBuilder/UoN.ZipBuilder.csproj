@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <PackageVersion>1.0.0</PackageVersion>
+
+    <Authors>UoN Application Development</Authors>
+
+    <Description>
+      .NET Standard library for providing an elegant Builder Pattern interface to SharpZipLib functionality.
+    </Description>
+
+    <PackageReleaseNotes>
+      First release.
+    </PackageReleaseNotes>
+
+    <Copyright>Copyright 2018 (c) University of Nottingham.</Copyright>
+
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageIconUrl>https://raw.githubusercontent.com/uon-nuget/assets/master/nuget-package-icon.png</PackageIconUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/uon-nuget/UoN.ZipBuilder/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/uon-nuget/UoN.ZipBuilder</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/uon-nuget/UoN.ZipBuilder</RepositoryUrl>
+    <PackageTags>uon zip netstandard</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
+  </ItemGroup>
+</Project>
