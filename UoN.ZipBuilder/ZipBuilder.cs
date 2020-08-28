@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Core;
@@ -39,6 +39,16 @@ namespace UoN.ZipBuilder
 
             ZipStream = new ZipOutputStream(DataStream);
 
+            return this;
+        }
+
+        public ZipBuilder AddBytes(byte[] bytes, string entryName)
+        {
+            ZipStream.PutNextEntry(CreateEntry(entryName));
+
+            ZipStream.Write(bytes, 0, bytes.Length);
+
+            ZipStream.CloseEntry();
             return this;
         }
 

@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.1.0</PackageVersion>
 
     <Authors>UoN Application Development</Authors>
 
@@ -11,10 +11,10 @@
     </Description>
 
     <PackageReleaseNotes>
-      First release.
+      Added `AddBytes()` content method.
     </PackageReleaseNotes>
 
-    <Copyright>Copyright 2018 (c) University of Nottingham.</Copyright>
+    <Copyright>Copyright 2020 (c) University of Nottingham.</Copyright>
 
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageIconUrl>https://raw.githubusercontent.com/uon-nuget/assets/master/nuget-package-icon.png</PackageIconUrl>
