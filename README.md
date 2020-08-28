@@ -17,6 +17,7 @@ It wraps [SharpZipLib] for its compression functionality, since that's more full
 - Use of Zip64 is configurable.
 - Shallow directories of files (non-recursive) can be added quickly and easily
 - Text content can be written directly to archive entries.
+- Bytes can be written directly to archive entries.
 - It currently only supports **Zip** archives, though support for other archives through [SharpZipLib] should be trivial.
 - It currently only supports creating archives **In Memory**, but can output the results to a byte array for use as you see fit.
 
@@ -59,6 +60,10 @@ Adds a physical file (at a given path) to the archive, with the specified entry 
 ### `AddTextContent()`
 
 Adds string content directly to a new archive entry at the specified entry path.
+
+### `AddBytes()`
+
+Adds a byte array directly to a new archive entry at the specified entry path.
 
 ### `AddDirectoryShallow()`
 
