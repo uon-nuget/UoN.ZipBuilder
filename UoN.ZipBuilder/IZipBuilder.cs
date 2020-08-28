@@ -1,4 +1,4 @@
-﻿namespace UoN.ZipBuilder
+namespace UoN.ZipBuilder
 {
     /// <summary>
     /// Interface for a Builder Pattern class which produces zip files.
@@ -70,6 +70,14 @@
         /// <param name="entryName">The entryname for the resulting text file inside the zip.</param>
         /// <returns>The ZipBuilder instance.</returns>
         ZipBuilder AddTextContent(string content, string entryName);
+
+        /// <summary>
+        /// Adds a byte array to an entry inside the zip
+        /// </summary>
+        /// <param name="bytes">The byte array to make up the entry.</param>
+        /// <param name="entryName">Entryname for the file inside the zip.</param>
+        /// <returns></returns>
+        ZipBuilder AddBytes(byte[] bytes, string entryName);
 
         #endregion
 
